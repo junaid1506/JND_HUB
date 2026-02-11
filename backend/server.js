@@ -1,6 +1,7 @@
 const dns = require("node:dns");
 dns.setServers(["8.8.8.8", "1.1.1.1"]); // Forces Node to use Google and Cloudflare DNS
 // Start Servers
+require("dotenv").config();
 const mongoose = require("mongoose");
 const app = require("./src/app");
 const connectDb = require("./src/db/db");
