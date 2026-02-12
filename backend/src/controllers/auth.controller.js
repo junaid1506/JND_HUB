@@ -76,7 +76,8 @@ function logoutUser(req, res) {
 
 async function registerFoodpartner(req, res) {
   const { fullName, email, password } = req.body;
-  const isFoodPartnerAlreadyExist = await foodpartnerModel({ email });
+  const isFoodPartnerAlreadyExist = await foodpartnerModel.findOne({ email });
+  console.log(isFoodPartnerAlreadyExist);
   if (isFoodPartnerAlreadyExist) {
     return res.status(400).json({
       message: "User Already Exist ",
@@ -84,11 +85,12 @@ async function registerFoodpartner(req, res) {
   }
   const hashedPassword = await bcryptjs.hash(password, 10);
 
-  const foodpartner = foodpartnerModel.create({
+  const foodpartner = await foodpartnerModel.create({
     fullName,
     email,
     password: hashedPassword,
   });
+  console.log(foodpartner);
   const token = jwt.sign(
     {
       id: foodpartner._id,
@@ -99,7 +101,7 @@ async function registerFoodpartner(req, res) {
 
   return res.status(201).json({
     message: "Foodpartner Register Successfully",
-    user: {
+    foodpartner: {
       _id: foodpartner._id,
       email: foodpartner.email,
       fullName: foodpartner.fullName,
@@ -108,7 +110,7 @@ async function registerFoodpartner(req, res) {
 }
 async function loginFoodpartner(req, res) {
   const { email, password } = req.body;
-  const foodpartner = await userModel.findOne({ email });
+  const foodpartner = await foodpartnerModel.findOne({ email });
   if (!foodpartner) {
     return res.status(401).json({
       message: "Invalid email or password",
@@ -144,13 +146,11 @@ function logoutFoodpartner(req, res) {
   });
 }
 
-
-
 module.exports = {
   registerUser,
   loginUser,
   logoutUser,
   registerFoodpartner,
   loginFoodpartner,
-  logoutFoodpartner
+  logoutFoodpartner,
 };
