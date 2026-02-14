@@ -154,4 +154,4 @@ module.exports = {
   loginFoodpartner,
   logoutFoodpartner,
 };  
-djdk
+
