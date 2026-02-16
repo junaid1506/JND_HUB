@@ -21,4 +21,12 @@ async function createFood(req, res) {
   });
 }
 
-module.exports = { createFood };
+async function getFoodItems(req, res) {
+  const foodItems = await foodModel.find();
+  res.status(200).json({
+    message: "All Food Fetched Successfully",
+    foodItems: foodItems,
+  });
+}
+
+module.exports = { createFood, getFoodItems };

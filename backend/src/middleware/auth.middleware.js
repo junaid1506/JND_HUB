@@ -17,7 +17,7 @@ async function authFoodPartnerMiddleware(req, res, next) {
     const foodPartner = await foodpartnerModel.findById(decoded.id);
     if (!foodPartner) {
       return res.status(401).json({
-        message: "Login as a FoodPartner",
+        message: "Please login as a FoodPartner",
       });
     }
 
@@ -47,7 +47,7 @@ async function authUserMiddleware(req, res, next) {
 
     if (!user) {
       return res.status(401).json({
-        message: "Login as a user",
+        message: "Please login as a user",
       });
     }
 

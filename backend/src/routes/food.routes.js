@@ -18,6 +18,10 @@ foodRouter.post(
 );
 
 // POST /api/food/ [protected]
-foodRouter.get('/', )
+foodRouter.get(
+  "/",
+  authMiddleware.authUserMiddleware,
+  foodController.getFoodItems,
+);
 
 module.exports = foodRouter;
