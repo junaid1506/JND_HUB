@@ -17,4 +17,7 @@ foodRouter.post(
   foodController.createFood,
 );
 
+// POST /api/food/ [protected]
+foodRouter.get('/', )
+
 module.exports = foodRouter;
