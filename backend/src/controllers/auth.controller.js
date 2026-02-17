@@ -75,7 +75,7 @@ function logoutUser(req, res) {
 }
 
 async function registerFoodpartner(req, res) {
-  const { fullName, email, password } = req.body;
+  const { fullName, email, password, contactName, phone, address } = req.body;
   const isFoodPartnerAlreadyExist = await foodpartnerModel.findOne({ email });
   console.log(isFoodPartnerAlreadyExist);
   if (isFoodPartnerAlreadyExist) {
@@ -89,6 +89,9 @@ async function registerFoodpartner(req, res) {
     fullName,
     email,
     password: hashedPassword,
+    contactName,
+    phone,
+    address,
   });
   console.log(foodpartner);
   const token = jwt.sign(
@@ -105,6 +108,9 @@ async function registerFoodpartner(req, res) {
       _id: foodpartner._id,
       email: foodpartner.email,
       fullName: foodpartner.fullName,
+      contactName: foodpartner.contactName,
+      phone: foodpartner.phone,
+      address: foodpartner.address,
     },
   });
 }
@@ -153,5 +159,4 @@ module.exports = {
   registerFoodpartner,
   loginFoodpartner,
   logoutFoodpartner,
-};  
-
+};
