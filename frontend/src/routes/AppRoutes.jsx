@@ -5,10 +5,12 @@ import UserLogin from "../pages/UserLogin";
 import FoodPartnerLogin from "../pages/FoodpartnerLogin";
 import FoodPartnerRegister from "../pages/FoodpartnerRegister";
 import NotFound from "../pages/NotFound";
+import Home from "../pages/general/Home";
 const AppRoutes = () => {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/user/register" element={<UserRegister />} />
         <Route path="/user/login" element={<UserLogin />} />
         <Route

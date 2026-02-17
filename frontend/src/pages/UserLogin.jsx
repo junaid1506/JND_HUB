@@ -17,7 +17,7 @@ const UserLogin = () => (
             <input
               type="email"
               className="form-input"
-              placeholder="ali@email.com"
+              placeholder="junaid@email.com"
             />
           </div>
           <div className="form-group">
