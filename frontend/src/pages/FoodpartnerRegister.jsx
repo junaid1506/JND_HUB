@@ -33,7 +33,7 @@ const FoodPartnerRegister = () => {
       );
       console.log(response.data);
 
-      navigate("/");
+      navigate("/create-food");
     } catch (err) {
       console.log(err);
     }
