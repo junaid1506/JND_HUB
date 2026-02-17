@@ -2,12 +2,12 @@ const mongoose = require("mongoose");
 
 const foodpartnerSchema = new mongoose.Schema(
   {
-    fullName: {
+    businessName: {
       type: String,
       required: true,
     },
 
-    contactName: {
+    contactPerson: {
       type: String,
       required: true,
     },
