@@ -93,7 +93,6 @@ async function registerFoodpartner(req, res) {
     phone,
     address,
   });
-  console.log(foodpartner);
   const token = jwt.sign(
     {
       id: foodpartner._id,
