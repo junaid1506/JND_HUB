@@ -10,7 +10,7 @@ const foodSchema = new mongoose.Schema({
     required: true,
   },
   description: {
-    trype: String,
+    type: String,
   },
   foodPartner: {
     type: mongoose.Schema.Types.ObjectId,
