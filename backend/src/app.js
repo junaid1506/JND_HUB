@@ -5,6 +5,7 @@ const cors = require("cors");
 // local require
 const authRouter = require("./routes/auth.routes");
 const foodRouter = require("./routes/food.routes");
+const foodPartnerRouter = require("./routes/foodpartner.routes");
 
 const app = express();
 app.use(express.json());
@@ -22,5 +23,6 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRouter);
 app.use("/api/food", foodRouter);
+app.use("/api/food-partner", foodPartnerRouter);
 
 module.exports = app;
