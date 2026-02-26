@@ -10,8 +10,6 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch partner details and their foods
-    // TODO: Replace with actual API
     axios
       .get(`http://localhost:3000/api/food-partner/${partnerId}`, {
         withCredentials: true,
@@ -35,12 +33,11 @@ const Profile = () => {
         .map((w) => w[0])
         .join("")
         .slice(0, 2)
-        .toUpperCase() || "?"
+        .toUpperCase() || "R"
     );
   };
 
   const handleVideoClick = (foodId) => {
-    // Navigate back to home and scroll to that video
     navigate(`/?food=${foodId}`);
   };
 
@@ -48,8 +45,8 @@ const Profile = () => {
     return (
       <>
         <style>{styles}</style>
-        <div className="bp-loading">
-          <div className="bp-spinner"></div>
+        <div className="profile-loading">
+          <div className="loading-spinner"></div>
         </div>
       </>
     );
@@ -58,65 +55,71 @@ const Profile = () => {
   return (
     <>
       <style>{styles}</style>
-      <div className="bp-container">
-        {/* Header Section - Maroon */}
-        <div className="bp-header">
-          {/* Back Button */}
-          <button className="bp-back-btn" onClick={() => navigate(-1)}>
-            ←
+      <div className="profile-page">
+        {/* Header with back button */}
+        <div className="profile-header">
+          <button className="back-btn" onClick={() => navigate(-1)}>
+            ← Back
           </button>
+        </div>
 
-          {/* Profile Info */}
-          <div className="bp-profile">
-            <div className="bp-avatar">
-              {partner?.businessName ? getInitials(partner.businessName) : "?"}
-            </div>
-            <div className="bp-info">
-              <div className="bp-name">
-                {partner?.businessName || "Restaurant"}
-              </div>
-              <div className="bp-address">{partner?.address || "Address"}</div>
-            </div>
+        {/* Profile Info Card */}
+        <div className="profile-card">
+          <div className="profile-avatar">
+            {getInitials(partner?.businessName)}
+          </div>
+          <div className="profile-name">
+            {partner?.businessName || "Restaurant"}
+          </div>
+          <div className="profile-address">
+            📍 {partner?.address || "Location"}
           </div>
 
-          {/* Stats */}
-          <div className="bp-stats">
-            <div className="bp-stat-box">
-              <div className="bp-stat-label">total meals</div>
-              <div className="bp-stat-value">{foods.length || 0}</div>
+          {/* Stats Row */}
+          <div className="profile-stats">
+            <div className="stat-item">
+              <div className="stat-value">{foods.length}</div>
+              <div className="stat-label">Meals</div>
             </div>
-            <div className="bp-stat-box">
-              <div className="bp-stat-label">customer serve</div>
-              <div className="bp-stat-value">
+            <div className="stat-divider"></div>
+            <div className="stat-item">
+              <div className="stat-value">
                 {partner?.customersServed || "0"}
               </div>
+              <div className="stat-label">Served</div>
             </div>
           </div>
         </div>
 
-        {/* Video Grid Section - Blue */}
-        <div className="bp-grid">
+        {/* Meals Section Title */}
+        <div className="meals-header">
+          <span className="meals-title">All Meals</span>
+          <span className="meals-count">{foods.length}</span>
+        </div>
+
+        {/* Video Grid */}
+        <div className="video-grid">
           {foods.length === 0 ? (
-            <div className="bp-empty">
-              <div className="bp-empty-icon">🍽️</div>
-              <div className="bp-empty-text">No meals available yet</div>
+            <div className="empty-state">
+              <div className="empty-icon">🍽️</div>
+              <div className="empty-text">No meals available</div>
             </div>
           ) : (
             foods.map((food) => (
               <div
                 key={food._id}
-                className="bp-video-card"
+                className="video-item"
                 onClick={() => handleVideoClick(food._id)}
               >
                 <video
-                  className="bp-video"
+                  className="video-thumb"
                   src={food.video}
                   muted
                   playsInline
                   preload="metadata"
                 />
-                <div className="bp-video-overlay">
-                  <div className="bp-video-name">{food.name}</div>
+                <div className="video-overlay">
+                  <span className="video-name">{food.name}</span>
                 </div>
               </div>
             ))
@@ -130,263 +133,270 @@ const Profile = () => {
 const styles = `
   * { margin: 0; padding: 0; box-sizing: border-box; }
   
-  body {
-    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #0a0a0a;
+  :root {
+    --bg: #f7f7f8;
+    --card: #ffffff;
+    --border: #e8e8ec;
+    --text: #181818;
+    --sub: #888899;
+    --accent: #ff6b35;
+    --shadow: 0 2px 16px rgba(0,0,0,0.07);
   }
   
-  .bp-container {
-    min-height: 100vh;
-    background: #0a0a0a;
-    padding-bottom: 20px;
-  }
-  
-  /* ── Header (Maroon) ── */
-  .bp-header {
-    background: linear-gradient(135deg, #6b3838 0%, #4a2525 100%);
-    padding: 16px 16px 24px;
-    position: relative;
-  }
-  
-  @media (min-width: 768px) {
-    .bp-header {
-      padding: 20px 24px 28px;
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #111113;
+      --card: #1c1c1f;
+      --border: #2a2a2e;
+      --text: #f0f0f0;
+      --sub: #888899;
+      --accent: #ff7a45;
+      --shadow: 0 2px 16px rgba(0,0,0,0.4);
     }
   }
   
-  .bp-back-btn {
-    background: rgba(255,255,255,0.15);
-    border: 1.5px solid rgba(255,255,255,0.3);
-    color: #fff;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
+  body {
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  
+  .profile-page {
+    min-height: 100vh;
+    background: var(--bg);
+    padding-bottom: 24px;
+  }
+  
+  /* ── Header ── */
+  .profile-header {
+    padding: 16px;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  
+  .back-btn {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--text);
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
     font-weight: 700;
     cursor: pointer;
-    margin-bottom: 16px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     transition: all 0.2s;
   }
   
-  .bp-back-btn:active {
-    transform: scale(0.95);
-    background: rgba(255,255,255,0.2);
+  .back-btn:active {
+    transform: scale(0.96);
+    background: var(--bg);
   }
   
-  .bp-profile {
-    display: flex;
-    gap: 14px;
-    margin-bottom: 20px;
+  /* ── Profile Card ── */
+  .profile-card {
+    background: var(--card);
+    margin: 16px;
+    padding: 28px 20px 24px;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    text-align: center;
   }
   
-  .bp-avatar {
+  .profile-avatar {
     width: 90px;
     height: 90px;
-    min-width: 90px;
+    margin: 0 auto 16px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #2d5a2d 0%, #1a3d1a 100%);
-    border: 3px solid rgba(255,255,255,0.3);
+    background: linear-gradient(135deg, #ff6b35 0%, #ff8952 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 2rem;
     font-weight: 800;
     color: #fff;
+    box-shadow: 0 8px 24px rgba(255,107,53,0.3);
     text-transform: uppercase;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
   }
   
-  @media (max-width: 400px) {
-    .bp-avatar {
-      width: 80px;
-      height: 80px;
-      min-width: 80px;
-      font-size: 1.8rem;
-    }
-  }
-  
-  .bp-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 6px;
-  }
-  
-  .bp-name {
-    font-size: 1.2rem;
+  .profile-name {
+    font-size: 1.3rem;
     font-weight: 800;
-    color: #fff;
-    line-height: 1.2;
-    border: 2px solid rgba(255,255,255,0.3);
-    background: rgba(0,0,0,0.15);
-    padding: 8px 14px;
-    border-radius: 8px;
+    color: var(--text);
+    margin-bottom: 6px;
   }
   
-  @media (max-width: 400px) {
-    .bp-name {
-      font-size: 1.1rem;
-      padding: 7px 12px;
-    }
-  }
-  
-  .bp-address {
+  .profile-address {
     font-size: 0.88rem;
     font-weight: 600;
-    color: rgba(255,255,255,0.85);
-    line-height: 1.3;
-    border: 2px solid rgba(255,255,255,0.3);
-    background: rgba(0,0,0,0.15);
-    padding: 8px 14px;
-    border-radius: 8px;
+    color: var(--sub);
+    margin-bottom: 20px;
   }
   
-  @media (max-width: 400px) {
-    .bp-address {
-      font-size: 0.84rem;
-      padding: 7px 12px;
-    }
+  .profile-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
   }
   
-  .bp-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  
-  .bp-stat-box {
-    background: rgba(0,0,0,0.2);
-    border: 2px solid rgba(255,255,255,0.25);
-    border-radius: 10px;
-    padding: 10px 14px;
+  .stat-item {
+    flex: 1;
     text-align: center;
   }
   
-  .bp-stat-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: rgba(255,255,255,0.7);
-    text-transform: lowercase;
+  .stat-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
     margin-bottom: 4px;
   }
   
-  .bp-stat-value {
-    font-size: 1.5rem;
+  .stat-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--sub);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .stat-divider {
+    width: 1px;
+    height: 40px;
+    background: var(--border);
+  }
+  
+  /* ── Meals Header ── */
+  .meals-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 16px 12px;
+  }
+  
+  .meals-title {
+    font-size: 1.1rem;
     font-weight: 800;
-    color: #fff;
-    line-height: 1;
+    color: var(--text);
   }
   
-  @media (max-width: 400px) {
-    .bp-stat-value {
-      font-size: 1.3rem;
-    }
+  .meals-count {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--sub);
+    background: var(--card);
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
   }
   
-  /* ── Video Grid (Blue) ── */
-  .bp-grid {
+  /* ── Video Grid ── */
+  .video-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-    background: #0a0a0a;
-    padding: 2px;
+    gap: 4px;
+    padding: 0 16px;
   }
   
-  .bp-video-card {
+  .video-item {
     position: relative;
     aspect-ratio: 9 / 16;
-    background: linear-gradient(135deg, #2a4a5a 0%, #1a3040 100%);
+    background: var(--card);
+    border-radius: 8px;
     overflow: hidden;
     cursor: pointer;
+    box-shadow: var(--shadow);
     transition: transform 0.2s;
   }
   
-  .bp-video-card:active {
-    transform: scale(0.98);
+  .video-item:active {
+    transform: scale(0.96);
   }
   
-  .bp-video {
+  .video-thumb {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
   
-  .bp-video-overlay {
+  .video-overlay {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
     background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 100%);
     padding: 8px 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
   
-  .bp-video-name {
+  .video-name {
     font-size: 0.7rem;
     font-weight: 700;
     color: #fff;
-    text-align: center;
-    line-height: 1.2;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.8);
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-  }
-  
-  @media (min-width: 768px) {
-    .bp-video-name {
-      font-size: 0.8rem;
-    }
+    text-overflow: ellipsis;
+    line-height: 1.2;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
   }
   
   /* ── Empty State ── */
-  .bp-empty {
+  .empty-state {
     grid-column: 1 / -1;
     padding: 60px 20px;
     text-align: center;
   }
   
-  .bp-empty-icon {
-    font-size: 3.5rem;
-    margin-bottom: 12px;
-    opacity: 0.5;
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    opacity: 0.3;
   }
   
-  .bp-empty-text {
-    font-size: 0.95rem;
+  .empty-text {
+    font-size: 0.9rem;
     font-weight: 600;
-    color: rgba(255,255,255,0.5);
+    color: var(--sub);
   }
   
   /* ── Loading ── */
-  .bp-loading {
+  .profile-loading {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #0a0a0a;
+    background: var(--bg);
   }
   
-  .bp-spinner {
+  .loading-spinner {
     width: 50px;
     height: 50px;
     border: 4px solid rgba(255,107,53,0.2);
-    border-top-color: #ff6b35;
+    border-top-color: var(--accent);
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
   }
   
   @keyframes spin {
     to { transform: rotate(360deg); }
+  }
+  
+  /* ── Desktop ── */
+  @media (min-width: 768px) {
+    .profile-page {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .video-name {
+      font-size: 0.75rem;
+    }
   }
 `;
 
