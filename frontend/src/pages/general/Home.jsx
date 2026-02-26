@@ -590,7 +590,7 @@ const ReelItem = ({ food, isActive }) => {
           <span className="reel-btn-icon">🏪</span>
           <Link
             style={{ textDecoration: "none", color: "white" }}
-            to="/food-partner-profile"
+            to={`/food-partner-profile/${food.foodPartner._id}`}
           >
             <span>Visit Store</span>
           </Link>

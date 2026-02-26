@@ -17,6 +17,7 @@ const Profile = () => {
         withCredentials: true,
       })
       .then((response) => {
+        console.log(response);
         setPartner(response.data.partner);
         setFoods(response.data.foods);
         setLoading(false);
@@ -68,10 +69,12 @@ const Profile = () => {
           {/* Profile Info */}
           <div className="bp-profile">
             <div className="bp-avatar">
-              {partner?.fullName ? getInitials(partner.fullName) : "?"}
+              {partner?.businessName ? getInitials(partner.businessName) : "?"}
             </div>
             <div className="bp-info">
-              <div className="bp-name">{partner?.fullName || "Restaurant"}</div>
+              <div className="bp-name">
+                {partner?.businessName || "Restaurant"}
+              </div>
               <div className="bp-address">{partner?.address || "Address"}</div>
             </div>
           </div>

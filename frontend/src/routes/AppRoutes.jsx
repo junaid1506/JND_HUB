@@ -10,11 +10,11 @@ import CreateFood from "../pages/Food-Partner.jsx/CreateFood";
 import Profile from "../pages/Food-Partner.jsx/Profile";
 const AppRoutes = () => {
   return (
-    <Router>   
+    <Router>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/create-food" element={<CreateFood />} />
-        <Route path="/food-partner-profile" element={<Profile />} />
+        <Route path="/food-partner-profile/:partnerId" element={<Profile />} />
         <Route path="/" element={<Home />} />
         <Route path="/user/register" element={<UserRegister />} />
         <Route path="/user/login" element={<UserLogin />} />
